@@ -168,6 +168,40 @@
 <script>
   let english = false;
 
+function updateCalculatorLanguage() {
+  const text = (zh, en) => english ? en : zh;
+
+  document.querySelector("#costTool h3").textContent =
+    text("方案成本比较计算器", "Cost Comparison Calculator");
+
+  document.querySelector("#costTool p").textContent =
+    text("填写两个方案的费用，比较使用期间的总成本。", "Enter costs for two options to compare their total costs.");
+
+  const labels = {
+    optionA: ["方案 A 名称", "Option A Name"],
+    initialA: ["方案 A 一次性费用", "Option A Initial Cost"],
+    monthlyA: ["方案 A 每月费用", "Option A Monthly Cost"],
+    optionB: ["方案 B 名称", "Option B Name"],
+    initialB: ["方案 B 一次性费用", "Option B Initial Cost"],
+    monthlyB: ["方案 B 每月费用", "Option B Monthly Cost"],
+    months: ["使用期限（月）", "Usage Period (Months)"]
+  };
+
+  Object.entries(labels).forEach(([id, names]) => {
+    const label = document.querySelector(`label[for="${id}"]`);
+    if (label) label.textContent = text(names[0], names[1]);
+  });
+
+  document.getElementById("calculateCost").textContent =
+    text("计算总成本", "Calculate Total Cost");
+
+  document.getElementById("copyCostResult").textContent =
+    text("复制计算结果", "Copy Result");
+
+  document.getElementById("closeDetail").textContent =
+    text("返回主题", "Back to Topics");
+}
+
   document.getElementById("lang").addEventListener("click", () => {
     english = !english;
     document.documentElement.lang = english ? "en" : "zh-CN";
@@ -194,6 +228,7 @@
     document.querySelectorAll("[data-zh]").forEach(el => {
       el.textContent = el.dataset[english ? "en" : "zh"];
     });
+    updateCalculatorLanguage();
   });
 
   document.getElementById("searchForm").addEventListener("submit", event => {
