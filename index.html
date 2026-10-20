@@ -263,6 +263,48 @@
   <section class="section panel" id="join">
     <h2 id="joinTitle">你是服务者或本地商家？</h2>
     <p id="joinText">欢迎准备入驻的摄影师、设计师、维修师傅、清洁搬家团队和本地商家。首批合作以信息核验和需求验证为主，暂不收取入驻费。</p>
+   <div class="field">
+  <label for="providerName">商家或个人名称</label>
+  <input id="providerName" type="text"
+         maxlength="80" placeholder="请输入名称">
+</div>
+
+<div class="field">
+  <label for="providerCategory">服务类别</label>
+  <select id="providerCategory">
+    <option value="">请选择类别</option>
+    <option value="摄影与设计">摄影与设计</option>
+    <option value="搬家与清洁">搬家与清洁</option>
+    <option value="维修与安装">维修与安装</option>
+    <option value="本地商家与商品">本地商家与商品</option>
+    <option value="其他">其他</option>
+  </select>
+</div>
+
+<div class="field">
+  <label for="providerArea">服务区域</label>
+  <input id="providerArea" type="text"
+         maxlength="100" placeholder="例如：吉州区、青原区">
+</div>
+
+<div class="field">
+  <label for="providerPrice">报价方式或价格区间</label>
+  <input id="providerPrice" type="text"
+         maxlength="100" placeholder="例如：单次300元起">
+</div>
+
+<div class="field">
+  <label for="providerPortfolio">服务介绍或作品链接</label>
+  <textarea id="providerPortfolio"
+            maxlength="1000"
+            placeholder="介绍服务内容、经验或作品"></textarea>
+</div>
+
+<div class="field">
+  <label for="providerContact">联系方式</label>
+  <input id="providerContact" type="text"
+         maxlength="100" placeholder="微信号或手机号码">
+</div>
     <button class="btn btn-primary" type="button" id="joinBtn">生成入驻申请信息</button>
     <div class="result" id="joinResult" aria-live="polite"></div>
     <button class="btn hidden" id="copyJoin" type="button" style="margin-top:10px">复制申请信息</button>
