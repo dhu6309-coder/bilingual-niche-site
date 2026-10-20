@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Discover practical niche guides, tools and resources for everyday problems.">
+  <title>Niche Atlas | 细分领域指南</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color: #202b3c;
+      background: #f7f9fc;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 7%;
+      background: white;
+      border-bottom: 1px solid #e7ebf1;
+    }
+    .logo { font-size: 22px; font-weight: 800; }
+    button, input { font: inherit; }
+    button {
+      cursor: pointer;
+      border: 1px solid #d8dfeb;
+      border-radius: 10px;
+      padding: 10px 15px;
+      background: white;
+    }
+    main { max-width: 1050px; margin: auto; padding: 65px 22px; }
+    .hero { text-align: center; margin-bottom: 45px; }
+    .tag { color: #3568d4; font-weight: 700; }
+    h1 { font-size: clamp(34px, 5vw, 55px); margin: 18px 0; }
+    .subtitle { color: #647187; line-height: 1.8; }
+    .search {
+      display: flex; gap: 10px; max-width: 610px;
+      margin: 28px auto;
+    }
+    input {
+      flex: 1; min-width: 0; padding: 14px;
+      border: 1px solid #d8dfeb; border-radius: 10px;
+    }
+    .primary { background: #285bd4; color: white; border: 0; }
+    h2 { margin-top: 50px; }
+    .grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 18px; margin-top: 24px;
+    }
+    .card {
+      background: white; border: 1px solid #e5eaf2;
+      border-radius: 16px; padding: 23px;
+    }
+    .card h3 { margin-top: 0; }
+    .card p { color: #647187; line-height: 1.7; }
+    .label { font-size: 13px; color: #3568d4; }
+    footer {
+      text-align: center; padding: 28px;
+      color: #788397; border-top: 1px solid #e7ebf1;
+    }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      main { padding-top: 40px; }
+      header { padding: 17px 5%; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">Niche Atlas</div>
+  <button id="lang" type="button">English</button>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="tag" id="tag">PRACTICAL GUIDES FOR SPECIFIC NEEDS</div>
+    <h1 id="title">找到真正有用的细分领域指南</h1>
+    <p class="subtitle" id="subtitle">
+      聚焦具体问题，发现实用工具、清晰教程和高质量资源。
+    </p>
+    <form class="search" id="searchForm">
+      <input id="query" type="search" placeholder="搜索问题或主题..." aria-label="Search">
+      <button class="primary" id="searchBtn" type="submit">搜索</button>
+    </form>
+  </section>
+
+  <h2 id="sectionTitle">探索主题</h2>
+  <section class="grid" id="cards">
+    <article class="card">
+      <div class="label">GUIDES</div>
+      <h3 data-zh="实用操作指南" data-en="Practical Guides">实用操作指南</h3>
+      <p data-zh="把复杂流程拆解成清晰、可执行的步骤。"
+         data-en="Break complicated processes into clear, actionable steps.">
+         把复杂流程拆解成清晰、可执行的步骤。
+      </p>
+    </article>
+    <article class="card">
+      <div class="label">TOOLS</div>
+      <h3 data-zh="工具与资源" data-en="Tools & Resources">工具与资源</h3>
+      <p data-zh="帮助用户更快找到合适的软件和专业资源。"
+         data-en="Find useful software and specialized resources faster.">
+         帮助用户更快找到合适的软件和专业资源。
+      </p>
+    </article>
+    <article class="card">
+      <div class="label">SOLUTIONS</div>
+      <h3 data-zh="具体问题解决方案" data-en="Problem-Solving Guides">具体问题解决方案</h3>
+      <p data-zh="围绕真实需求提供实用的比较、清单和方案。"
+         data-en="Explore useful comparisons, checklists and solutions.">
+         围绕真实需求提供实用的比较、清单和方案。
+      </p>
+    </article>
+  </section>
+</main>
+
+<footer id="footer">
+  Niche Atlas · 发现细分需求，解决实际问题
+</footer>
+
+<script>
+  let english = false;
+
+  document.getElementById("lang").addEventListener("click", () => {
+    english = !english;
+    document.documentElement.lang = english ? "en" : "zh-CN";
+    document.getElementById("lang").textContent = english ? "中文" : "English";
+    document.getElementById("tag").textContent = english
+      ? "PRACTICAL GUIDES FOR SPECIFIC NEEDS"
+      : "PRACTICAL GUIDES FOR SPECIFIC NEEDS";
+    document.getElementById("title").textContent = english
+      ? "Find Guides That Solve Real Problems"
+      : "找到真正有用的细分领域指南";
+    document.getElementById("subtitle").textContent = english
+      ? "Explore useful tools, clear tutorials and carefully selected resources."
+      : "聚焦具体问题，发现实用工具、清晰教程和高质量资源。";
+    document.getElementById("sectionTitle").textContent =
+      english ? "Explore Topics" : "探索主题";
+    document.getElementById("query").placeholder =
+      english ? "Search a topic or problem..." : "搜索问题或主题...";
+    document.getElementById("searchBtn").textContent =
+      english ? "Search" : "搜索";
+    document.getElementById("footer").textContent = english
+      ? "Niche Atlas · Discover needs, solve real problems"
+      : "Niche Atlas · 发现细分需求，解决实际问题";
+
+    document.querySelectorAll("[data-zh]").forEach(el => {
+      el.textContent = el.dataset[english ? "en" : "zh"];
+    });
+  });
+
+  document.getElementById("searchForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const query = document.getElementById("query").value.trim().toLowerCase();
+    const cards = [...document.querySelectorAll(".card")];
+    let count = 0;
+
+    cards.forEach(card => {
+      const visible = !query || card.textContent.toLowerCase().includes(query);
+      card.hidden = !visible;
+      if (visible) count++;
+    });
+
+    if (count === 0) {
+      alert(english ? "No matching topics yet." : "暂时没有匹配的主题。");
+    }
+  });
+</script>
+</body>
+</html>
