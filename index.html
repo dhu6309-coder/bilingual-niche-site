@@ -114,6 +114,13 @@
       </p>
     </article>
   </section>
+  <section id="detailPanel" hidden style="margin: 24px auto; max-width: 900px; padding: 24px; background: white; border: 1px solid #e7ebf1; border-radius: 16px;">
+  <h2 id="detailTitle"></h2>
+  <p id="detailDescription" style="line-height: 1.9; color: #64748b;"></p>
+  <button id="closeDetail" type="button" style="padding: 10px 18px; border: 1px solid #dbe3ef; border-radius: 8px; background: white; cursor: pointer;">
+    返回主题
+  </button>
+</section>
 </main>
 
 <footer id="footer">
@@ -167,6 +174,65 @@
       alert(english ? "No matching topics yet." : "暂时没有匹配的主题。");
     }
   });
+  // 让主题卡片可以点击
+const topicDetails = [
+  {
+    zhTitle: "实用操作指南",
+    enTitle: "Practical Guides",
+    zhDescription: "这里将提供清晰、可执行的操作教程。我们会把复杂任务拆分成简单步骤，帮助你更高效地解决问题。",
+    enDescription: "Find practical, step-by-step tutorials that break complex tasks into simple, actionable steps."
+  },
+  {
+    zhTitle: "工具与资源",
+    enTitle: "Tools & Resources",
+    zhDescription: "这里将逐步加入实用的在线工具、效率计算器和资源清单，帮助你更快完成日常任务。",
+    enDescription: "Discover useful online tools, productivity calculators, and curated resources."
+  },
+  {
+    zhTitle: "具体问题解决方案",
+    enTitle: "Problem-Solving Solutions",
+    zhDescription: "针对具体问题提供解决步骤、实用清单和方案比较，帮助你做出更合适的选择。",
+    enDescription: "Explore practical solutions, actionable checklists, and comparisons for specific problems."
+  }
+];
+
+const detailPanel = document.getElementById("detailPanel");
+
+document.querySelectorAll("#cards .card").forEach((card, index) => {
+  card.style.cursor = "pointer";
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("role", "button");
+
+  function openTopic() {
+    const topic = topicDetails[index];
+    if (!topic) return;
+
+    document.getElementById("detailTitle").textContent =
+      english ? topic.enTitle : topic.zhTitle;
+
+    document.getElementById("detailDescription").textContent =
+      english ? topic.enDescription : topic.zhDescription;
+
+    detailPanel.hidden = false;
+    detailPanel.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }
+
+  card.addEventListener("click", openTopic);
+
+  card.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openTopic();
+    }
+  });
+});
+
+document.getElementById("closeDetail").addEventListener("click", () => {
+  detailPanel.hidden = true;
+});
 </script>
 </body>
 </html>
