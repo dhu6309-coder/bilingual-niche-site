@@ -499,19 +499,43 @@ document.querySelectorAll("[data-request]").forEach(btn => {
     catch { $("requestResult").textContent += english ? "\n\nClipboard unavailable; please select and copy the text manually." : "\n\n当前浏览器无法自动复制，请手动选中上方文字复制。"; }
   });
 
-  let latestJoin = "";
-  $("joinBtn").addEventListener("click", () => {
-    latestJoin = english
-      ? "Niche Atlas provider application\nBusiness/person name:\nService category:\nService area:\nPrice method/range:\nPortfolio or examples:\nRelevant qualifications (if applicable):\nContact method:\n"
-      : "Niche Atlas 服务者入驻申请\n商家/个人名称：\n服务类别：\n服务区域：\n报价方式/价格区间：\n作品或案例：\n相关资质（如适用）：\n联系方式：\n";
-    $("joinResult").textContent = (english ? "Application draft generated. Fill in the details, then send it to the platform operator through a trusted channel:\n\n" : "入驻申请模板已生成。请填写信息后，通过可信渠道发送给平台运营者：\n\n") + latestJoin;
+  
+let latestJoin = "";
+
+$("joinBtn").addEventListener("click", () => {
+    const name = $("providerName").value.trim();
+    const category = $("providerCategory").value;
+    const area = $("providerArea").value.trim();
+    const price = $("providerPrice").value.trim();
+    const portfolio = $("providerPortfolio").value.trim();
+    const contact = $("providerContact").value.trim();
+
+    if (!name || !category || !area || !contact) {
+        $("joinResult").textContent =
+            "请填写名称、服务类别、服务区域和联系方式。";
+        $("joinResult").classList.add("show");
+        return;
+    }
+
+    latestJoin = [
+        "Niche Atlas 服务者入驻申请",
+        "商家或个人名称：" + name,
+        "服务类别：" + category,
+        "服务区域：" + area,
+        "报价方式/价格区间：" + (price || "待沟通"),
+        "服务介绍/作品链接：" + (portfolio || "暂未提供"),
+        "联系方式：" + contact
+    ].join("\n");
+
+    $("joinResult").textContent =
+        "申请信息已生成，请核对后复制并发送给平台运营者：\n\n"
+        + latestJoin
+        + "\n\n注意：申请尚未提交到后台，需要人工接收和审核。";
+
     $("joinResult").classList.add("show");
     $("copyJoin").classList.remove("hidden");
-  });
-  $("copyJoin").addEventListener("click", async () => {
-    try { await navigator.clipboard.writeText(latestJoin); $("copyJoin").textContent = english ? "Copied" : "已复制"; }
-    catch { $("joinResult").textContent += english ? "\n\nPlease select and copy manually." : "\n\n请手动选中并复制申请信息。"; }
-  });
+});
+
 
   applyLanguage();
   filterServices("");
