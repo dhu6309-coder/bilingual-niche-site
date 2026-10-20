@@ -453,7 +453,12 @@ document.querySelectorAll("[data-request]").forEach(btn => {
       (english ? "Description: " : "需求描述：") + desc + "\n" +
       (english ? "Contact: " : "联系方式：") + contact + "\n" +
       (english ? "Name: " : "称呼：") + nickname;
-    $("requestResult").textContent = (english ? "Request draft generated. It has not been sent or saved. Copy it and send it through a channel you trust:\n\n" : "需求单已在当前页面生成，但尚未发送或保存。请复制后，通过你信任的渠道发送：\n\n") + latestRequest;
+  $("requestResult").textContent =
+    (english
+        ? "Your request draft has been generated, but it has not been sent to Niche Atlas. Please copy it and send it to the platform operator through a contact channel provided on the official website."
+        : "你的需求单已生成，但尚未发送给 Niche Atlas 平台。请点击下方“复制需求单”，再通过平台公布的联系方式发送给运营者。平台收到后将人工核对需求，并尝试协助寻找合适的服务者。")
+    + "\n\n"
+    + latestRequest;
     $("requestResult").classList.add("show");
     $("copyRequest").classList.remove("hidden");
   });
