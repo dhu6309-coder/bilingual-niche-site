@@ -325,9 +325,12 @@ document.getElementById("calculateCost").addEventListener("click", () => {
     numbers.some(n => !Number.isFinite(n) || n < 0) ||
     !Number.isInteger(months) || months < 1 || months > 600
   ) {
-    document.getElementById("costResult").textContent =
-      "请填写有效的非负费用，使用期限须为 1～600 个月的整数。";
-    return;
+   document.getElementById("costResult").textContent = english
+  ? "Enter valid non-negative costs and a whole number of months from 1 to 600."
+  : "请填写有效的非负费用，使用期限须为 1～600 个月的整数。";
+
+copyButton.style.display = "none";
+return;
   }
 
   const totalA = initialA + monthlyA * months;
@@ -335,20 +338,29 @@ document.getElementById("calculateCost").addEventListener("click", () => {
   const nameA = document.getElementById("optionA").value.trim() || "方案 A";
   const nameB = document.getElementById("optionB").value.trim() || "方案 B";
 
-  let conclusion;
+  
+let conclusion;
 
-  if (totalA < totalB) {
-    conclusion = `${nameA}成本更低，预计节省 ${(totalB - totalA).toFixed(2)}。`;
-  } else if (totalB < totalA) {
-    conclusion = `${nameB}成本更低，预计节省 ${(totalA - totalB).toFixed(2)}。`;
-  } else {
-    conclusion = "两个方案的总成本相同。";
-  }
+if (totalA < totalB) {
+  conclusion = english
+    ? `${nameA} costs less. Estimated savings: ${(totalB - totalA).toFixed(2)}.`
+    : `${nameA}成本更低，预计节省 ${(totalB - totalA).toFixed(2)}。`;
+} else if (totalB < totalA) {
+  conclusion = english
+    ? `${nameB} costs less. Estimated savings: ${(totalA - totalB).toFixed(2)}.`
+    : `${nameB}成本更低，预计节省 ${(totalA - totalB).toFixed(2)}。`;
+} else {
+  conclusion = english
+    ? "Both options have the same total cost."
+    : "两个方案的总成本相同。";
+}
 
-  document.getElementById("costResult").textContent =
-    `${nameA}总成本：${totalA.toFixed(2)}；` +
-    `${nameB}总成本：${totalB.toFixed(2)}。${conclusion}`;
-  copyButton.style.display = "inline-block";
+document.getElementById("costResult").textContent = english
+  ? `${nameA} total cost: ${totalA.toFixed(2)}; ${nameB} total cost: ${totalB.toFixed(2)}. ${conclusion}`
+  : `${nameA}总成本：${totalA.toFixed(2)}；${nameB}总成本：${totalB.toFixed(2)}。${conclusion}`;
+
+copyButton.style.display = "inline-block";
+
 });
 const copyButton = document.getElementById("copyCostResult");
 const resultBox = document.getElementById("costResult");
