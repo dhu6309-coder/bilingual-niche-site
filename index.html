@@ -117,6 +117,41 @@
   <section id="detailPanel" hidden style="margin: 24px auto; max-width: 900px; padding: 24px; background: white; border: 1px solid #e7ebf1; border-radius: 16px;">
   <h2 id="detailTitle"></h2>
   <p id="detailDescription" style="line-height: 1.9; color: #64748b;"></p>
+    
+<div id="costTool" hidden style="margin-top: 24px;">
+  <h3>方案成本比较计算器</h3>
+  <p>填写两个方案的费用，比较使用期间的总成本。</p>
+
+  <label for="optionA">方案 A 名称</label>
+  <input id="optionA" value="方案 A" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <label for="initialA">方案 A 一次性费用</label>
+  <input id="initialA" type="number" min="0" step="0.01" value="1000" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <label for="monthlyA">方案 A 每月费用</label>
+  <input id="monthlyA" type="number" min="0" step="0.01" value="100" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <hr>
+
+  <label for="optionB">方案 B 名称</label>
+  <input id="optionB" value="方案 B" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <label for="initialB">方案 B 一次性费用</label>
+  <input id="initialB" type="number" min="0" step="0.01" value="500" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <label for="monthlyB">方案 B 每月费用</label>
+  <input id="monthlyB" type="number" min="0" step="0.01" value="150" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <label for="months">使用期限（月）</label>
+  <input id="months" type="number" min="1" max="600" step="1" value="12" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+  <button id="calculateCost" type="button" style="padding:12px 20px;background:#2859d9;color:white;border:0;border-radius:8px;cursor:pointer;">
+    计算总成本
+  </button>
+
+  <div id="costResult" aria-live="polite" style="margin-top:20px;line-height:1.8;"></div>
+</div>
+
   <button id="closeDetail" type="button" style="padding: 10px 18px; border: 1px solid #dbe3ef; border-radius: 8px; background: white; cursor: pointer;">
     返回主题
   </button>
@@ -212,7 +247,7 @@ document.querySelectorAll("#cards .card").forEach((card, index) => {
 
     document.getElementById("detailDescription").textContent =
       english ? topic.enDescription : topic.zhDescription;
-
+document.getElementById("costTool").hidden = index !== 1;
     detailPanel.hidden = false;
     detailPanel.scrollIntoView({
       behavior: "smooth",
@@ -233,6 +268,50 @@ document.querySelectorAll("#cards .card").forEach((card, index) => {
 document.getElementById("closeDetail").addEventListener("click", () => {
   detailPanel.hidden = true;
 });
+  
+document.getElementById("calculateCost").addEventListener("click", () => {
+  const getNumber = id => {
+    const value = document.getElementById(id).value.trim();
+    return value === "" ? NaN : Number(value);
+  };
+
+  const initialA = getNumber("initialA");
+  const monthlyA = getNumber("monthlyA");
+  const initialB = getNumber("initialB");
+  const monthlyB = getNumber("monthlyB");
+  const months = getNumber("months");
+
+  const numbers = [initialA, monthlyA, initialB, monthlyB];
+
+  if (
+    numbers.some(n => !Number.isFinite(n) || n < 0) ||
+    !Number.isInteger(months) || months < 1 || months > 600
+  ) {
+    document.getElementById("costResult").textContent =
+      "请填写有效的非负费用，使用期限须为 1～600 个月的整数。";
+    return;
+  }
+
+  const totalA = initialA + monthlyA * months;
+  const totalB = initialB + monthlyB * months;
+  const nameA = document.getElementById("optionA").value.trim() || "方案 A";
+  const nameB = document.getElementById("optionB").value.trim() || "方案 B";
+
+  let conclusion;
+
+  if (totalA < totalB) {
+    conclusion = `${nameA}成本更低，预计节省 ${(totalB - totalA).toFixed(2)}。`;
+  } else if (totalB < totalA) {
+    conclusion = `${nameB}成本更低，预计节省 ${(totalA - totalB).toFixed(2)}。`;
+  } else {
+    conclusion = "两个方案的总成本相同。";
+  }
+
+  document.getElementById("costResult").textContent =
+    `${nameA}总成本：${totalA.toFixed(2)}；` +
+    `${nameB}总成本：${totalB.toFixed(2)}。${conclusion}`;
+});
+
 </script>
 </body>
 </html>
