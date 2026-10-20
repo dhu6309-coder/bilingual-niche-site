@@ -1,387 +1,421 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Discover practical niche guides, tools and resources for everyday problems.">
-  <title>Niche Atlas | 细分领域指南</title>
+  <meta name="description" content="Niche Atlas 吉安本地服务撮合：发现本地服务、比较服务信息、提交需求。">
+  <title>Niche Atlas｜吉安本地服务</title>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, "Microsoft YaHei", sans-serif;
-      color: #202b3c;
-      background: #f7f9fc;
+    :root {
+      --ink:#1f2937; --muted:#667085; --line:#e5eaf1; --paper:#f6f8fb;
+      --white:#fff; --blue:#285bd4; --blue-dark:#1d46aa; --blue-pale:#edf3ff;
+      --green:#087f5b; --radius:18px; --shadow:0 12px 35px rgba(27,45,77,.07);
     }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 7%;
-      background: white;
-      border-bottom: 1px solid #e7ebf1;
-    }
-    .logo { font-size: 22px; font-weight: 800; }
-    button, input { font: inherit; }
-    button {
-      cursor: pointer;
-      border: 1px solid #d8dfeb;
-      border-radius: 10px;
-      padding: 10px 15px;
-      background: white;
-    }
-    main { max-width: 1050px; margin: auto; padding: 65px 22px; }
-    .hero { text-align: center; margin-bottom: 45px; }
-    .tag { color: #3568d4; font-weight: 700; }
-    h1 { font-size: clamp(34px, 5vw, 55px); margin: 18px 0; }
-    .subtitle { color: #647187; line-height: 1.8; }
-    .search {
-      display: flex; gap: 10px; max-width: 610px;
-      margin: 28px auto;
-    }
-    input {
-      flex: 1; min-width: 0; padding: 14px;
-      border: 1px solid #d8dfeb; border-radius: 10px;
-    }
-    .primary { background: #285bd4; color: white; border: 0; }
-    h2 { margin-top: 50px; }
-    .grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 18px; margin-top: 24px;
-    }
-    .card {
-      background: white; border: 1px solid #e5eaf2;
-      border-radius: 16px; padding: 23px;
-    }
-    .card h3 { margin-top: 0; }
-    .card p { color: #647187; line-height: 1.7; }
-    .label { font-size: 13px; color: #3568d4; }
-    footer {
-      text-align: center; padding: 28px;
-      color: #788397; border-top: 1px solid #e7ebf1;
-    }
-    @media (max-width: 700px) {
-      .grid { grid-template-columns: 1fr; }
-      main { padding-top: 40px; }
-      header { padding: 17px 5%; }
-    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,"Microsoft YaHei",sans-serif;color:var(--ink);background:var(--paper);line-height:1.6}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit}
+    .wrap{width:min(1120px,92%);margin:0 auto}
+    header{background:rgba(255,255,255,.95);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+    .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{font-size:22px;font-weight:850;letter-spacing:-.5px;text-decoration:none}
+    .brand span{color:var(--blue)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .btn{border:1px solid var(--line);background:white;border-radius:11px;padding:10px 15px;font-weight:650;color:var(--ink)}
+    .btn:hover{border-color:#b7c7e7}
+    .btn-primary{background:var(--blue);border-color:var(--blue);color:#fff}
+    .btn-primary:hover{background:var(--blue-dark)}
+    .hero{padding:70px 0 45px;background:radial-gradient(ellipse at top right,#e8efff 0,transparent 45%),linear-gradient(180deg,#fff 0%,#f6f8fb 100%)}
+    .hero-inner{max-width:820px;margin:auto;text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:13px;font-weight:800;letter-spacing:1.2px;background:var(--blue-pale);padding:7px 12px;border-radius:999px}
+    h1{font-size:clamp(34px,5.5vw,58px);line-height:1.15;letter-spacing:-1.6px;margin:20px 0 16px}
+    .hero p{font-size:17px;color:var(--muted);max-width:650px;margin:0 auto}
+    .searchbar{display:flex;gap:10px;max-width:660px;margin:28px auto 0}
+    .searchbar input{flex:1;min-width:0;padding:15px 17px;border:1px solid #dbe2ed;border-radius:13px;background:#fff;outline:none}
+    .searchbar input:focus,input:focus,select:focus,textarea:focus{border-color:#88a9f8;box-shadow:0 0 0 3px rgba(40,91,212,.1);outline:none}
+    .microcopy{font-size:12px!important;margin-top:12px!important}
+    main{padding:28px 0 70px}
+    .section{margin-top:34px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:18px}
+    .section-head h2{font-size:25px;line-height:1.25;margin:0 0 6px}
+    .section-head p{color:var(--muted);margin:0;font-size:14px}
+    .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .category{border:1px solid var(--line);background:white;border-radius:var(--radius);padding:22px;text-align:left;box-shadow:0 3px 12px rgba(27,45,77,.025);transition:transform .15s,border-color .15s}
+    .category:hover,.category.active{transform:translateY(-2px);border-color:#91acf0;box-shadow:var(--shadow)}
+    .category.active{background:var(--blue-pale)}
+    .category-icon{width:46px;height:46px;border-radius:14px;background:var(--blue-pale);display:grid;place-items:center;font-size:23px;margin-bottom:14px}
+    .category strong{display:block;font-size:16px;margin-bottom:5px}
+    .category small{color:var(--muted);font-size:13px}
+    .service-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:20px 0}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{border:1px solid var(--line);background:white;border-radius:999px;padding:7px 12px;font-size:13px}
+    .chip.active{background:var(--blue);border-color:var(--blue);color:white}
+    .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .service-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:21px;display:flex;flex-direction:column;min-height:235px}
+    .service-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .pill{font-size:12px;border-radius:999px;padding:5px 9px;background:#f1f4f8;color:#526071}
+    .pill-blue{background:var(--blue-pale);color:var(--blue)}
+    .service-card h3{font-size:18px;margin:16px 0 7px}
+    .service-card p{font-size:14px;color:var(--muted);margin:0 0 15px}
+    .service-meta{font-size:13px;color:#526071;margin-top:auto;padding:12px 0}
+    .service-card .btn{width:100%}
+    .empty{grid-column:1/-1;text-align:center;border:1px dashed #cbd5e1;background:#fff;border-radius:var(--radius);padding:35px 20px;color:var(--muted)}
+    .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+    .panel h2{margin:0 0 8px;font-size:23px}
+    .panel>p{color:var(--muted);font-size:14px;margin:0 0 20px}
+    .steps{display:grid;gap:15px}
+    .step{display:flex;gap:12px;align-items:flex-start}
+    .step-num{flex:0 0 30px;height:30px;border-radius:10px;background:var(--blue-pale);color:var(--blue);font-weight:800;display:grid;place-items:center}
+    .step strong{display:block;margin-bottom:3px}
+    .step span{font-size:13px;color:var(--muted)}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:1/-1}
+    label{font-size:13px;font-weight:700}
+    .field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #d7dfeb;border-radius:10px;background:white}
+    textarea{min-height:95px;resize:vertical}
+    .consent{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--muted);margin:14px 0}
+    .consent input{margin-top:4px}
+    .notice{background:#fff8e8;border:1px solid #f3dfaa;border-radius:12px;padding:12px 14px;color:#7a5a12;font-size:12px;margin-top:13px}
+    .result{display:none;margin-top:15px;border:1px solid #b8dfce;background:#effaf4;padding:15px;border-radius:12px;white-space:pre-wrap;font-size:13px}
+    .result.show{display:block}
+    .footer{background:#fff;border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:13px}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .hidden{display:none!important}
+    @media(max-width:850px){.category-grid{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+    @media(max-width:560px){.nav{min-height:64px}.brand{font-size:19px}.nav .btn{padding:8px 10px}.hero{padding:48px 0 30px}.hero p{font-size:15px}.searchbar{flex-direction:column}.searchbar .btn{width:100%}.category-grid,.service-grid{grid-template-columns:1fr}.category{padding:17px}.section-head{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:19px}}
   </style>
 </head>
 <body>
 <header>
-  <div class="logo">Niche Atlas</div>
-  <button id="lang" type="button">English</button>
+  <div class="wrap nav">
+    <a class="brand" href="#" aria-label="Niche Atlas 首页">Niche <span>Atlas</span></a>
+    <div class="nav-actions">
+      <a class="btn" href="#join" data-i18n="joinNav">服务者入驻</a>
+      <button class="btn" id="langBtn" type="button">English</button>
+    </div>
+  </div>
 </header>
 
-<main>
-  <section class="hero">
-    <div class="tag" id="tag">PRACTICAL GUIDES FOR SPECIFIC NEEDS</div>
-    <h1 id="title">找到真正有用的细分领域指南</h1>
-    <p class="subtitle" id="subtitle">
-      聚焦具体问题，发现实用工具、清晰教程和高质量资源。
-    </p>
-    <form class="search" id="searchForm">
-      <input id="query" type="search" placeholder="搜索问题或主题..." aria-label="Search">
-      <button class="primary" id="searchBtn" type="submit">搜索</button>
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="eyebrow" id="eyebrow">JI'AN LOCAL SERVICES · 吉安本地服务</div>
+    <h1 id="heroTitle">在吉安，找到解决问题的人。</h1>
+    <p id="heroText">从摄影设计到搬家维修，描述你的需求，我们帮你更方便地找到合适的服务者和本地商家。</p>
+    <form class="searchbar" id="searchForm">
+      <input id="searchInput" type="search" placeholder="搜索服务，例如：拍摄、搬家、家具安装" aria-label="搜索服务">
+      <button class="btn btn-primary" type="submit" id="searchBtn">搜索服务</button>
     </form>
-  </section>
-
-  <h2 id="sectionTitle">探索主题</h2>
-  <section class="grid" id="cards">
-    <article class="card">
-      <div class="label">GUIDES</div>
-      <h3 data-zh="实用操作指南" data-en="Practical Guides">实用操作指南</h3>
-      <p data-zh="把复杂流程拆解成清晰、可执行的步骤。"
-         data-en="Break complicated processes into clear, actionable steps.">
-         把复杂流程拆解成清晰、可执行的步骤。
-      </p>
-    </article>
-    <article class="card">
-      <div class="label">TOOLS</div>
-      <h3 data-zh="工具与资源" data-en="Tools & Resources">工具与资源</h3>
-      <p data-zh="帮助用户更快找到合适的软件和专业资源。"
-         data-en="Find useful software and specialized resources faster.">
-         帮助用户更快找到合适的软件和专业资源。
-      </p>
-    </article>
-    <article class="card">
-      <div class="label">SOLUTIONS</div>
-      <h3 data-zh="具体问题解决方案" data-en="Problem-Solving Guides">具体问题解决方案</h3>
-      <p data-zh="围绕真实需求提供实用的比较、清单和方案。"
-         data-en="Explore useful comparisons, checklists and solutions.">
-         围绕真实需求提供实用的比较、清单和方案。
-      </p>
-    </article>
-  </section>
-  <section id="detailPanel" hidden style="margin: 24px auto; max-width: 900px; padding: 24px; background: white; border: 1px solid #e7ebf1; border-radius: 16px;">
-  <h2 id="detailTitle"></h2>
-  <p id="detailDescription" style="line-height: 1.9; color: #64748b;"></p>
-    
-<div id="costTool" hidden style="margin-top: 24px;">
-  <h3>方案成本比较计算器</h3>
-  <p>填写两个方案的费用，比较使用期间的总成本。</p>
-
-  <label for="optionA">方案 A 名称</label>
-  <input id="optionA" value="方案 A" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <label for="initialA">方案 A 一次性费用</label>
-  <input id="initialA" type="number" min="0" step="0.01" value="1000" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <label for="monthlyA">方案 A 每月费用</label>
-  <input id="monthlyA" type="number" min="0" step="0.01" value="100" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <hr>
-
-  <label for="optionB">方案 B 名称</label>
-  <input id="optionB" value="方案 B" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <label for="initialB">方案 B 一次性费用</label>
-  <input id="initialB" type="number" min="0" step="0.01" value="500" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <label for="monthlyB">方案 B 每月费用</label>
-  <input id="monthlyB" type="number" min="0" step="0.01" value="150" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <label for="months">使用期限（月）</label>
-  <input id="months" type="number" min="1" max="600" step="1" value="12" style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
-
-  <button id="calculateCost" type="button" style="padding:12px 20px;background:#2859d9;color:white;border:0;border-radius:8px;cursor:pointer;">
-    计算总成本
-  </button>
-<button id="copyCostResult" type="button"
-  style="display:none;margin-top:12px;padding:10px 16px;border:1px solid #dbe3ef;border-radius:8px;background:white;cursor:pointer;">
-  复制计算结果
-</button>
-  <div id="costResult" aria-live="polite" style="margin-top:20px;line-height:1.8;"></div>
-</div>
-
-  <button id="closeDetail" type="button" style="padding: 10px 18px; border: 1px solid #dbe3ef; border-radius: 8px; background: white; cursor: pointer;">
-    返回主题
-  </button>
+    <p class="microcopy" id="heroNote">首版以吉州区需求验证为主；服务信息以实际核验结果为准。</p>
+  </div>
 </section>
+
+<main class="wrap">
+  <section class="section" id="categories">
+    <div class="section-head">
+      <div><h2 id="categoryTitle">你需要哪类帮助？</h2><p id="categorySub">按问题选择，不必先知道该找什么职业。</p></div>
+      <button class="btn" id="showAllBtn" type="button">查看全部</button>
+    </div>
+    <div class="category-grid">
+      <button class="category" type="button" data-category="creative">
+        <span class="category-icon">📷</span><strong data-zh="摄影、视频与设计" data-en="Photo, Video & Design">摄影、视频与设计</strong>
+        <small data-zh="商品拍摄、短视频、海报" data-en="Product photos, short videos, posters">商品拍摄、短视频、海报</small>
+      </button>
+      <button class="category" type="button" data-category="moving">
+        <span class="category-icon">📦</span><strong data-zh="搬家与清洁" data-en="Moving & Cleaning">搬家与清洁</strong>
+        <small data-zh="搬运、保洁、整理" data-en="Moving, cleaning, organizing">搬运、保洁、整理</small>
+      </button>
+      <button class="category" type="button" data-category="repair">
+        <span class="category-icon">🛠️</span><strong data-zh="维修与安装" data-en="Repair & Installation">维修与安装</strong>
+        <small data-zh="家具安装、拆装、日常维修" data-en="Furniture assembly and small repairs">家具安装、拆装、日常维修</small>
+      </button>
+      <button class="category" type="button" data-category="local">
+        <span class="category-icon">🏪</span><strong data-zh="本地商家与特色商品" data-en="Local Shops & Products">本地商家与特色商品</strong>
+        <small data-zh="发现本地店铺与特色产品" data-en="Discover local shops and products">发现本地店铺与特色产品</small>
+      </button>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="section-head">
+      <div><h2 id="serviceTitle">服务需求入口</h2><p id="serviceSub">首批服务者资料正在整理中。你可以先浏览类别，或直接提交需求。</p></div>
+    </div>
+    <div class="service-toolbar">
+      <div class="chips" id="filterChips">
+        <button class="chip active" data-filter="all" type="button" data-zh="全部" data-en="All">全部</button>
+        <button class="chip" data-filter="creative" type="button" data-zh="摄影设计" data-en="Creative">摄影设计</button>
+        <button class="chip" data-filter="moving" type="button" data-zh="搬家清洁" data-en="Moving & Cleaning">搬家清洁</button>
+        <button class="chip" data-filter="repair" type="button" data-zh="维修安装" data-en="Repair">维修安装</button>
+        <button class="chip" data-filter="local" type="button" data-zh="本地商家" data-en="Local shops">本地商家</button>
+      </div>
+    </div>
+    <div class="service-grid" id="serviceGrid">
+      <article class="service-card" data-cat="creative" data-search="摄影 商品拍摄 短视频 海报 设计 创意">
+        <div class="service-top"><span class="pill pill-blue" data-zh="摄影与设计" data-en="Photo & Design">摄影与设计</span><span class="pill" data-zh="需求征集中" data-en="Requests welcome">需求征集中</span></div>
+        <h3 data-zh="小商家摄影、短视频与设计" data-en="Photo, video and design for small businesses">小商家摄影、短视频与设计</h3>
+        <p data-zh="适合餐饮店、零售店和个人工作室。可提交商品拍摄、宣传视频、海报等需求。" data-en="For restaurants, retailers and independent studios. Request product photos, promo videos or posters.">适合餐饮店、零售店和个人工作室。可提交商品拍摄、宣传视频、海报等需求。</p>
+        <div class="service-meta" data-zh="服务区域：吉安（以服务者实际范围为准）" data-en="Area: Ji'an (subject to provider availability)">服务区域：吉安（以服务者实际范围为准）</div>
+        <button class="btn" type="button" data-request="creative" data-zh="提交这类需求" data-en="Request this service">提交这类需求</button>
+      </article>
+      <article class="service-card" data-cat="moving" data-search="搬家 搬运 保洁 清洁 收纳 整理">
+        <div class="service-top"><span class="pill pill-blue" data-zh="搬家与清洁" data-en="Moving & Cleaning">搬家与清洁</span><span class="pill" data-zh="需求征集中" data-en="Requests welcome">需求征集中</span></div>
+        <h3 data-zh="搬家、清洁与空间整理" data-en="Moving, cleaning and organizing">搬家、清洁与空间整理</h3>
+        <p data-zh="提交起止区域、物品情况、面积和时间要求，便于后续核对服务范围与报价。" data-en="Share areas, item details, room size and timing so availability and quotes can be checked.">提交起止区域、物品情况、面积和时间要求，便于后续核对服务范围与报价。</p>
+        <div class="service-meta" data-zh="报价与可预约时间需逐一确认" data-en="Quotes and availability require confirmation">报价与可预约时间需逐一确认</div>
+        <button class="btn" type="button" data-request="moving" data-zh="提交这类需求" data-en="Request this service">提交这类需求</button>
+      </article>
+      <article class="service-card" data-cat="repair" data-search="家具安装 维修 拆装 家电 安装 师傅">
+        <div class="service-top"><span class="pill pill-blue" data-zh="维修与安装" data-en="Repair & Installation">维修与安装</span><span class="pill" data-zh="需求征集中" data-en="Requests welcome">需求征集中</span></div>
+        <h3 data-zh="家具安装、拆装与小型维修" data-en="Furniture assembly and small repairs">家具安装、拆装与小型维修</h3>
+        <p data-zh="描述物品类型、问题情况、所在区域和期望时间，便于判断是否适合上门处理。" data-en="Describe the item, issue, area and preferred time to help assess service fit.">描述物品类型、问题情况、所在区域和期望时间，便于判断是否适合上门处理。</p>
+        <div class="service-meta" data-zh="涉及专业资质的项目需额外核验" data-en="Services requiring licenses need additional checks">涉及专业资质的项目需额外核验</div>
+        <button class="btn" type="button" data-request="repair" data-zh="提交这类需求" data-en="Request this service">提交这类需求</button>
+      </article>
+      <article class="service-card" data-cat="local" data-search="本地商家 特产 商品 店铺 农产品 礼品">
+        <div class="service-top"><span class="pill pill-blue" data-zh="本地商家" data-en="Local shops">本地商家</span><span class="pill" data-zh="商家征集中" data-en="Sellers welcome">商家征集中</span></div>
+        <h3 data-zh="本地商家与特色商品" data-en="Local shops and specialty products">本地商家与特色商品</h3>
+        <p data-zh="欢迎提交想了解的本地店铺、特色商品或商家合作需求；商品信息核实后再公开展示。" data-en="Suggest local shops, specialty products or partnership ideas. Listings will be published after verification.">欢迎提交想了解的本地店铺、特色商品或商家合作需求；商品信息核实后再公开展示。</p>
+        <div class="service-meta" data-zh="目前不提供在线下单或支付" data-en="Online ordering and payment are not available yet">目前不提供在线下单或支付</div>
+        <button class="btn" type="button" data-request="local" data-zh="提交这类需求" data-en="Request this service">提交这类需求</button>
+      </article>
+    </div>
+    <p class="microcopy" id="demoNotice">说明：以上是服务类别入口，不代表具体商家已入驻或已完成资质审核。</p>
+  </section>
+
+  <section class="section two-col">
+    <div class="panel">
+      <h2 id="howTitle">如何使用 Niche Atlas？</h2>
+      <p id="howSub">先从需求开始，平台初期由人工协助匹配。</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div><strong id="step1Title">描述你需要什么</strong><span id="step1Text">选择类别，填写区域、预算和时间。</span></div></div>
+        <div class="step"><div class="step-num">2</div><div><strong id="step2Title">核对服务信息</strong><span id="step2Text">由平台根据实际可用资源进一步确认。</span></div></div>
+        <div class="step"><div class="step-num">3</div><div><strong id="step3Title">自行确认报价与服务</strong><span id="step3Text">在确定合作前确认价格、服务范围和售后安排。</span></div></div>
+      </div>
+      <div class="notice" id="safetyNotice">当前为早期验证版本，提交需求不会自动产生订单，也不代表平台已承诺能匹配成功。</div>
+    </div>
+
+    <div class="panel" id="request">
+      <h2 id="requestTitle">提交服务需求</h2>
+      <p id="requestSub">填写必要信息，生成一份需求单。当前演示版本不会把信息自动发送或保存到服务器。</p>
+      <form id="requestForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="needType" id="labelType">需求类别</label>
+            <select id="needType" required>
+              <option value="">请选择</option>
+              <option value="creative">摄影、视频与设计</option>
+              <option value="moving">搬家与清洁</option>
+              <option value="repair">维修与安装</option>
+              <option value="local">本地商家与商品</option>
+              <option value="other">其他需求</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="area" id="labelArea">所在区域</label>
+            <select id="area" required>
+              <option value="">请选择</option>
+              <option>吉州区</option><option>青原区</option><option>吉安县</option><option>其他区域</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="budget" id="labelBudget">预算范围（可选）</label>
+            <select id="budget">
+              <option value="">暂不确定</option><option>100元以内</option><option>100–300元</option><option>300–800元</option><option>800元以上</option><option>需要报价</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="time" id="labelTime">期望时间（可选）</label>
+            <input id="time" type="text" placeholder="例如：本周末">
+          </div>
+          <div class="field full">
+            <label for="description" id="labelDesc">需求描述</label>
+            <textarea id="description" required maxlength="1000" placeholder="请描述你需要什么服务、数量或现场情况。不要填写身份证号等敏感信息。"></textarea>
+          </div>
+          <div class="field">
+            <label for="contact" id="labelContact">联系方法</label>
+            <input id="contact" type="text" maxlength="100" placeholder="微信号或手机号（生成需求单时使用）" required>
+          </div>
+          <div class="field">
+            <label for="nickname" id="labelNickname">称呼（可选）</label>
+            <input id="nickname" type="text" maxlength="40" placeholder="怎么称呼你">
+          </div>
+        </div>
+        <label class="consent"><input type="checkbox" id="consent" required><span id="consentText">我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。</span></label>
+        <button class="btn btn-primary" type="submit" id="generateBtn">生成需求单</button>
+        <div class="result" id="requestResult" aria-live="polite"></div>
+        <button class="btn hidden" id="copyRequest" type="button" style="margin-top:10px">复制需求单</button>
+        <div class="notice" id="privacyNotice">请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。</div>
+      </form>
+    </div>
+  </section>
+
+  <section class="section panel" id="join">
+    <h2 id="joinTitle">你是服务者或本地商家？</h2>
+    <p id="joinText">欢迎准备入驻的摄影师、设计师、维修师傅、清洁搬家团队和本地商家。首批合作以信息核验和需求验证为主，暂不收取入驻费。</p>
+    <button class="btn btn-primary" type="button" id="joinBtn">生成入驻申请信息</button>
+    <div class="result" id="joinResult" aria-live="polite"></div>
+    <button class="btn hidden" id="copyJoin" type="button" style="margin-top:10px">复制申请信息</button>
+  </section>
 </main>
 
-<footer id="footer">
-  Niche Atlas · 发现细分需求，解决实际问题
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div><strong>Niche Atlas</strong> · <span id="footerText">吉安本地服务需求与资源匹配</span></div>
+    <div id="footerNote">早期测试版 · 服务信息以核实结果为准</div>
+  </div>
 </footer>
 
 <script>
+(() => {
   let english = false;
+  let activeFilter = "all";
+  const $ = id => document.getElementById(id);
 
-function updateCalculatorLanguage() {
-  const text = (zh, en) => english ? en : zh;
-
-  document.querySelector("#costTool h3").textContent =
-    text("方案成本比较计算器", "Cost Comparison Calculator");
-
-  document.querySelector("#costTool p").textContent =
-    text("填写两个方案的费用，比较使用期间的总成本。", "Enter costs for two options to compare their total costs.");
-
-  const labels = {
-    optionA: ["方案 A 名称", "Option A Name"],
-    initialA: ["方案 A 一次性费用", "Option A Initial Cost"],
-    monthlyA: ["方案 A 每月费用", "Option A Monthly Cost"],
-    optionB: ["方案 B 名称", "Option B Name"],
-    initialB: ["方案 B 一次性费用", "Option B Initial Cost"],
-    monthlyB: ["方案 B 每月费用", "Option B Monthly Cost"],
-    months: ["使用期限（月）", "Usage Period (Months)"]
+  const translations = {
+    joinNav:["服务者入驻","List your service"],
+    eyebrow:["JI'AN LOCAL SERVICES · 吉安本地服务","JI'AN LOCAL SERVICES"],
+    heroTitle:["在吉安，找到解决问题的人。","Find the right local help in Ji'an."],
+    heroText:["从摄影设计到搬家维修，描述你的需求，我们帮你更方便地找到合适的服务者和本地商家。","From creative work to moving and repairs, describe what you need and explore relevant local services."],
+    searchPlaceholder:["搜索服务，例如：拍摄、搬家、家具安装","Search services, e.g. photography, moving, furniture assembly"],
+    searchBtn:["搜索服务","Search services"],
+    heroNote:["首版以吉州区需求验证为主；服务信息以实际核验结果为准。","The first test focuses on Jizhou District. Service information must be verified."],
+    categoryTitle:["你需要哪类帮助？","What kind of help do you need?"],
+    categorySub:["按问题选择，不必先知道该找什么职业。","Start with your problem, not a job title."],
+    showAllBtn:["查看全部","Show all"],
+    serviceTitle:["服务需求入口","Service categories"],
+    serviceSub:["首批服务者资料正在整理中。你可以先浏览类别，或直接提交需求。","Provider profiles are being prepared. Browse categories or draft a request."],
+    demoNotice:["说明：以上是服务类别入口，不代表具体商家已入驻或已完成资质审核。","Note: These are category entry points, not confirmed provider listings or endorsements."],
+    howTitle:["如何使用 Niche Atlas？","How does Niche Atlas work?"],
+    howSub:["先从需求开始，平台初期由人工协助匹配。","Start with your need. Matching is handled manually during the pilot."],
+    step1Title:["描述你需要什么","Describe what you need"],
+    step1Text:["选择类别，填写区域、预算和时间。","Choose a category and share area, budget and timing."],
+    step2Title:["核对服务信息","Review service information"],
+    step2Text:["由平台根据实际可用资源进一步确认。","We will check against actually available providers."],
+    step3Title:["自行确认报价与服务","Confirm price and scope"],
+    step3Text:["在确定合作前确认价格、服务范围和售后安排。","Confirm pricing, scope and after-service terms before proceeding."],
+    safetyNotice:["当前为早期验证版本，提交需求不会自动产生订单，也不代表平台已承诺能匹配成功。","This is an early pilot. A request draft is not an order and does not guarantee a match."],
+    requestTitle:["提交服务需求","Describe your request"],
+    requestSub:["填写必要信息，生成一份需求单。当前演示版本不会把信息自动发送或保存到服务器。","Fill in the essentials to generate a request summary. This demo does not send or store it on a server."],
+    labelType:["需求类别","Category"],labelArea:["所在区域","Area"],labelBudget:["预算范围（可选）","Budget (optional)"],labelTime:["期望时间（可选）","Preferred timing (optional)"],labelDesc:["需求描述","Description"],labelContact:["联系方法","Contact method"],labelNickname:["称呼（可选）","Name (optional)"],
+    timePlaceholder:["例如：本周末","e.g. this weekend"],descPlaceholder:["请描述你需要什么服务、数量或现场情况。不要填写身份证号等敏感信息。","Describe the service, quantity or situation. Do not include sensitive ID information."],contactPlaceholder:["微信号或手机号（生成需求单时使用）","WeChat ID or phone number (used in the draft)"],nicknamePlaceholder:["怎么称呼你","How should we address you"],
+    consentText:["我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。","I agree to use these details to generate this request draft and understand it will not be sent automatically."],
+    generateBtn:["生成需求单","Generate request draft"],copyRequest:["复制需求单","Copy request draft"],privacyNotice:["请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。","Do not enter ID numbers, bank details or unnecessary precise addresses. The draft is shown only in this browser."],
+    joinTitle:["你是服务者或本地商家？","Are you a service provider or local business?"],
+    joinText:["欢迎准备入驻的摄影师、设计师、维修师傅、清洁搬家团队和本地商家。首批合作以信息核验和需求验证为主，暂不收取入驻费。","Photographers, designers, repair workers, cleaning and moving teams, and local shops are welcome to express interest. Initial onboarding is free while we verify information and demand."],
+    joinBtn:["生成入驻申请信息","Create provider application draft"],copyJoin:["复制申请信息","Copy application draft"],
+    footerText:["吉安本地服务需求与资源匹配","Local service requests and matching in Ji'an"],footerNote:["早期测试版 · 服务信息以核实结果为准","Early pilot · Listings require verification"]
   };
 
-  Object.entries(labels).forEach(([id, names]) => {
-    const label = document.querySelector(`label[for="${id}"]`);
-    if (label) label.textContent = text(names[0], names[1]);
-  });
-
-  document.getElementById("calculateCost").textContent =
-    text("计算总成本", "Calculate Total Cost");
-
-  document.getElementById("copyCostResult").textContent =
-    text("复制计算结果", "Copy Result");
-
-  document.getElementById("closeDetail").textContent =
-    text("返回主题", "Back to Topics");
-}
-
-  document.getElementById("lang").addEventListener("click", () => {
-    english = !english;
+  function setText(id, pair) { if ($(id)) $(id).textContent = pair[english ? 1 : 0]; }
+  function applyLanguage() {
+    Object.entries(translations).forEach(([id,pair]) => {
+      if (id === "searchPlaceholder" || id === "timePlaceholder" || id === "descPlaceholder" || id === "contactPlaceholder" || id === "nicknamePlaceholder") return;
+      setText(id,pair);
+    });
+    $("searchInput").placeholder = translations.searchPlaceholder[english ? 1 : 0];
+    $("time").placeholder = translations.timePlaceholder[english ? 1 : 0];
+    $("description").placeholder = translations.descPlaceholder[english ? 1 : 0];
+    $("contact").placeholder = translations.contactPlaceholder[english ? 1 : 0];
+    $("nickname").placeholder = translations.nicknamePlaceholder[english ? 1 : 0];
+    $("langBtn").textContent = english ? "中文" : "English";
     document.documentElement.lang = english ? "en" : "zh-CN";
-    document.getElementById("lang").textContent = english ? "中文" : "English";
-    document.getElementById("tag").textContent = english
-      ? "PRACTICAL GUIDES FOR SPECIFIC NEEDS"
-      : "PRACTICAL GUIDES FOR SPECIFIC NEEDS";
-    document.getElementById("title").textContent = english
-      ? "Find Guides That Solve Real Problems"
-      : "找到真正有用的细分领域指南";
-    document.getElementById("subtitle").textContent = english
-      ? "Explore useful tools, clear tutorials and carefully selected resources."
-      : "聚焦具体问题，发现实用工具、清晰教程和高质量资源。";
-    document.getElementById("sectionTitle").textContent =
-      english ? "Explore Topics" : "探索主题";
-    document.getElementById("query").placeholder =
-      english ? "Search a topic or problem..." : "搜索问题或主题...";
-    document.getElementById("searchBtn").textContent =
-      english ? "Search" : "搜索";
-    document.getElementById("footer").textContent = english
-      ? "Niche Atlas · Discover needs, solve real problems"
-      : "Niche Atlas · 发现细分需求，解决实际问题";
+    document.querySelectorAll("[data-zh][data-en]").forEach(el => el.textContent = english ? el.dataset.en : el.dataset.zh);
+    $("filterChips").querySelectorAll("[data-filter]").forEach(btn => btn.classList.toggle("active",btn.dataset.filter === activeFilter));
+    updateEmptyText();
+  }
 
-    document.querySelectorAll("[data-zh]").forEach(el => {
-      el.textContent = el.dataset[english ? "en" : "zh"];
-    });
-    updateCalculatorLanguage();
-  });
+  function updateEmptyText() {
+    const cards = [...document.querySelectorAll(".service-card")];
+    const visible = cards.some(card => !card.classList.contains("hidden"));
+    let empty = $("noResults");
+    if (!visible) {
+      if (!empty) {
+        empty = document.createElement("div");
+        empty.id = "noResults";
+        empty.className = "empty";
+        $("serviceGrid").appendChild(empty);
+      }
+      empty.textContent = english ? "No matching categories. Try another search or submit a request." : "没有匹配的服务类别。请尝试其他关键词，或直接提交需求。";
+    } else if (empty) empty.remove();
+  }
 
-  document.getElementById("searchForm").addEventListener("submit", event => {
-    event.preventDefault();
-    const query = document.getElementById("query").value.trim().toLowerCase();
-    const cards = [...document.querySelectorAll(".card")];
-    let count = 0;
-
+  function filterServices(query = $("searchInput").value.trim().toLowerCase()) {
+    const cards = [...document.querySelectorAll(".service-card")];
     cards.forEach(card => {
-      const visible = !query || card.textContent.toLowerCase().includes(query);
-      card.hidden = !visible;
-      if (visible) count++;
+      const catMatch = activeFilter === "all" || card.dataset.cat === activeFilter;
+      const text = (card.textContent + " " + (card.dataset.search || "")).toLowerCase();
+      const qMatch = !query || text.includes(query);
+      card.classList.toggle("hidden", !(catMatch && qMatch));
     });
+    $("filterChips").querySelectorAll("[data-filter]").forEach(btn => btn.classList.toggle("active",btn.dataset.filter === activeFilter));
+    updateEmptyText();
+  }
 
-    if (count === 0) {
-      alert(english ? "No matching topics yet." : "暂时没有匹配的主题。");
-    }
+  $("langBtn").addEventListener("click", () => { english = !english; applyLanguage(); });
+  $("searchForm").addEventListener("submit", event => { event.preventDefault(); activeFilter = "all"; filterServices(); $("services").scrollIntoView({behavior:"smooth"}); });
+  $("showAllBtn").addEventListener("click", () => { activeFilter = "all"; $("searchInput").value = ""; filterServices(""); });
+  $("filterChips").querySelectorAll("[data-filter]").forEach(btn => btn.addEventListener("click", () => { activeFilter = btn.dataset.filter; filterServices(); }));
+  document.querySelectorAll(".category").forEach(btn => btn.addEventListener("click", () => {
+    activeFilter = btn.dataset.category;
+    filterServices();
+    document.querySelectorAll(".category").forEach(c => c.classList.toggle("active", c === btn));
+    $("services").scrollIntoView({behavior:"smooth"});
+  }));
+  document.querySelectorAll("[data-request]").forEach(btn => btn.addEventListener("click", () => {
+    $("needType").value = btn.dataset.request;
+    $("request").scrollIntoView({behavior:"smooth",block:"start"});
+    $("description").focus({preventScroll:true});
+  }));
+
+  let latestRequest = "";
+  $("requestForm").addEventListener("submit", event => {
+    event.preventDefault();
+    if (!$("consent").checked) return;
+    const typeText = $("needType").selectedOptions[0].textContent;
+    const area = $("area").value;
+    const budget = $("budget").value || (english ? "Not specified" : "暂不确定");
+    const time = $("time").value.trim() || (english ? "Flexible" : "时间灵活/未说明");
+    const desc = $("description").value.trim();
+    const contact = $("contact").value.trim();
+    const nickname = $("nickname").value.trim() || (english ? "Not specified" : "未填写");
+    latestRequest = (english ? "Niche Atlas request draft\n" : "Niche Atlas 服务需求单\n") +
+      (english ? "Category: " : "需求类别：") + typeText + "\n" +
+      (english ? "Area: " : "所在区域：") + area + "\n" +
+      (english ? "Budget: " : "预算范围：") + budget + "\n" +
+      (english ? "Timing: " : "期望时间：") + time + "\n" +
+      (english ? "Description: " : "需求描述：") + desc + "\n" +
+      (english ? "Contact: " : "联系方式：") + contact + "\n" +
+      (english ? "Name: " : "称呼：") + nickname;
+    $("requestResult").textContent = (english ? "Request draft generated. It has not been sent or saved. Copy it and send it through a channel you trust:\n\n" : "需求单已在当前页面生成，但尚未发送或保存。请复制后，通过你信任的渠道发送：\n\n") + latestRequest;
+    $("requestResult").classList.add("show");
+    $("copyRequest").classList.remove("hidden");
   });
-  // 让主题卡片可以点击
-const topicDetails = [
-  {
-    zhTitle: "实用操作指南",
-    enTitle: "Practical Guides",
-    zhDescription: "这里将提供清晰、可执行的操作教程。我们会把复杂任务拆分成简单步骤，帮助你更高效地解决问题。",
-    enDescription: "Find practical, step-by-step tutorials that break complex tasks into simple, actionable steps."
-  },
-  {
-    zhTitle: "工具与资源",
-    enTitle: "Tools & Resources",
-    zhDescription: "这里将逐步加入实用的在线工具、效率计算器和资源清单，帮助你更快完成日常任务。",
-    enDescription: "Discover useful online tools, productivity calculators, and curated resources."
-  },
-  {
-    zhTitle: "具体问题解决方案",
-    enTitle: "Problem-Solving Solutions",
-    zhDescription: "针对具体问题提供解决步骤、实用清单和方案比较，帮助你做出更合适的选择。",
-    enDescription: "Explore practical solutions, actionable checklists, and comparisons for specific problems."
-  }
-];
 
-const detailPanel = document.getElementById("detailPanel");
-
-document.querySelectorAll("#cards .card").forEach((card, index) => {
-  card.style.cursor = "pointer";
-  card.setAttribute("tabindex", "0");
-  card.setAttribute("role", "button");
-
-  function openTopic() {
-    const topic = topicDetails[index];
-    if (!topic) return;
-
-    document.getElementById("detailTitle").textContent =
-      english ? topic.enTitle : topic.zhTitle;
-
-    document.getElementById("detailDescription").textContent =
-      english ? topic.enDescription : topic.zhDescription;
-document.getElementById("costTool").hidden = index !== 1;
-    detailPanel.hidden = false;
-    detailPanel.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest"
-    });
-  }
-
-  card.addEventListener("click", openTopic);
-
-  card.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      openTopic();
-    }
+  $("copyRequest").addEventListener("click", async () => {
+    if (!latestRequest) return;
+    try { await navigator.clipboard.writeText(latestRequest); $("copyRequest").textContent = english ? "Copied" : "已复制"; }
+    catch { $("requestResult").textContent += english ? "\n\nClipboard unavailable; please select and copy the text manually." : "\n\n当前浏览器无法自动复制，请手动选中上方文字复制。"; }
   });
-});
 
-document.getElementById("closeDetail").addEventListener("click", () => {
-  detailPanel.hidden = true;
-});
-  
-document.getElementById("calculateCost").addEventListener("click", () => {
-  const getNumber = id => {
-    const value = document.getElementById(id).value.trim();
-    return value === "" ? NaN : Number(value);
-  };
+  let latestJoin = "";
+  $("joinBtn").addEventListener("click", () => {
+    latestJoin = english
+      ? "Niche Atlas provider application\nBusiness/person name:\nService category:\nService area:\nPrice method/range:\nPortfolio or examples:\nRelevant qualifications (if applicable):\nContact method:\n"
+      : "Niche Atlas 服务者入驻申请\n商家/个人名称：\n服务类别：\n服务区域：\n报价方式/价格区间：\n作品或案例：\n相关资质（如适用）：\n联系方式：\n";
+    $("joinResult").textContent = (english ? "Application draft generated. Fill in the details, then send it to the platform operator through a trusted channel:\n\n" : "入驻申请模板已生成。请填写信息后，通过可信渠道发送给平台运营者：\n\n") + latestJoin;
+    $("joinResult").classList.add("show");
+    $("copyJoin").classList.remove("hidden");
+  });
+  $("copyJoin").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(latestJoin); $("copyJoin").textContent = english ? "Copied" : "已复制"; }
+    catch { $("joinResult").textContent += english ? "\n\nPlease select and copy manually." : "\n\n请手动选中并复制申请信息。"; }
+  });
 
-  const initialA = getNumber("initialA");
-  const monthlyA = getNumber("monthlyA");
-  const initialB = getNumber("initialB");
-  const monthlyB = getNumber("monthlyB");
-  const months = getNumber("months");
-
-  const numbers = [initialA, monthlyA, initialB, monthlyB];
-
-  if (
-    numbers.some(n => !Number.isFinite(n) || n < 0) ||
-    !Number.isInteger(months) || months < 1 || months > 600
-  ) {
-   document.getElementById("costResult").textContent = english
-  ? "Enter valid non-negative costs and a whole number of months from 1 to 600."
-  : "请填写有效的非负费用，使用期限须为 1～600 个月的整数。";
-
-copyButton.style.display = "none";
-return;
-  }
-
-  const totalA = initialA + monthlyA * months;
-  const totalB = initialB + monthlyB * months;
-  const nameA = document.getElementById("optionA").value.trim() || "方案 A";
-  const nameB = document.getElementById("optionB").value.trim() || "方案 B";
-
-  
-let conclusion;
-
-if (totalA < totalB) {
-  conclusion = english
-    ? `${nameA} costs less. Estimated savings: ${(totalB - totalA).toFixed(2)}.`
-    : `${nameA}成本更低，预计节省 ${(totalB - totalA).toFixed(2)}。`;
-} else if (totalB < totalA) {
-  conclusion = english
-    ? `${nameB} costs less. Estimated savings: ${(totalA - totalB).toFixed(2)}.`
-    : `${nameB}成本更低，预计节省 ${(totalA - totalB).toFixed(2)}。`;
-} else {
-  conclusion = english
-    ? "Both options have the same total cost."
-    : "两个方案的总成本相同。";
-}
-
-document.getElementById("costResult").textContent = english
-  ? `${nameA} total cost: ${totalA.toFixed(2)}; ${nameB} total cost: ${totalB.toFixed(2)}. ${conclusion}`
-  : `${nameA}总成本：${totalA.toFixed(2)}；${nameB}总成本：${totalB.toFixed(2)}。${conclusion}`;
-
-copyButton.style.display = "inline-block";
-
-});
-const copyButton = document.getElementById("copyCostResult");
-const resultBox = document.getElementById("costResult");
-
-copyButton.addEventListener("click", async () => {
-  const result = resultBox.textContent.trim();
-
-  if (!result) {
- alert(english ? "Please calculate first." : "请先计算结果。");
-    return;
-  }
-
-  try {
-    await navigator.clipboard.writeText(result);
-  alert(english ? "Result copied!" : "计算结果已复制！");
-  } catch (error) {
-   alert(english
-  ? "Copy failed. Please select and copy the result manually."
-  : "自动复制失败，请手动选中计算结果并复制。");
-  }
-});
+  applyLanguage();
+  filterServices("");
+})();
 </script>
 </body>
 </html>
