@@ -372,11 +372,17 @@
     document.querySelectorAll(".category").forEach(c => c.classList.toggle("active", c === btn));
     $("services").scrollIntoView({behavior:"smooth"});
   }));
-  document.querySelectorAll("[data-request]").forEach(btn => btn.addEventListener("click", () => {
-    $("needType").value = btn.dataset.request;
-    $("request").scrollIntoView({behavior:"smooth",block:"start"});
-    $("description").focus({preventScroll:true});
-  }));
+ 
+document.querySelectorAll("[data-request]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    window.open(
+      "https://wj.qq.com/s2/28278327/ao82/",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  });
+});
+
 
   let latestRequest = "";
   $("requestForm").addEventListener("submit", event => {
