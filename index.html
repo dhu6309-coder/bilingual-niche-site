@@ -369,15 +369,17 @@ copyButton.addEventListener("click", async () => {
   const result = resultBox.textContent.trim();
 
   if (!result) {
-    alert("请先计算结果。");
+ alert(english ? "Please calculate first." : "请先计算结果。");
     return;
   }
 
   try {
     await navigator.clipboard.writeText(result);
-    alert("计算结果已复制！");
+  alert(english ? "Result copied!" : "计算结果已复制！");
   } catch (error) {
-    alert("自动复制失败，请手动选中计算结果并复制。");
+   alert(english
+  ? "Copy failed. Please select and copy the result manually."
+  : "自动复制失败，请手动选中计算结果并复制。");
   }
 });
 </script>
