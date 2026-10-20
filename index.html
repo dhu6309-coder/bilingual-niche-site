@@ -148,7 +148,10 @@
   <button id="calculateCost" type="button" style="padding:12px 20px;background:#2859d9;color:white;border:0;border-radius:8px;cursor:pointer;">
     计算总成本
   </button>
-
+<button id="copyCostResult" type="button"
+  style="display:none;margin-top:12px;padding:10px 16px;border:1px solid #dbe3ef;border-radius:8px;background:white;cursor:pointer;">
+  复制计算结果
+</button>
   <div id="costResult" aria-live="polite" style="margin-top:20px;line-height:1.8;"></div>
 </div>
 
@@ -310,8 +313,26 @@ document.getElementById("calculateCost").addEventListener("click", () => {
   document.getElementById("costResult").textContent =
     `${nameA}总成本：${totalA.toFixed(2)}；` +
     `${nameB}总成本：${totalB.toFixed(2)}。${conclusion}`;
+  copyButton.style.display = "inline-block";
 });
+const copyButton = document.getElementById("copyCostResult");
+const resultBox = document.getElementById("costResult");
 
+copyButton.addEventListener("click", async () => {
+  const result = resultBox.textContent.trim();
+
+  if (!result) {
+    alert("请先计算结果。");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(result);
+    alert("计算结果已复制！");
+  } catch (error) {
+    alert("自动复制失败，请手动选中计算结果并复制。");
+  }
+});
 </script>
 </body>
 </html>
