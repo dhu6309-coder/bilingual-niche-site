@@ -376,8 +376,9 @@
 
   <section class="section panel" id="join">
     <h2 id="joinTitle">你是服务者或本地商家？</h2>
-    <p id="joinText">欢迎准备入驻的摄影师、设计师、维修师傅、清洁搬家团队和本地商家。首批合作以信息核验和需求验证为主，暂不收取入驻费。</p>
-   <div class="field">
+  <p id="joinText">Niche Atlas 现面向吉州区、青原区及吉安县招募摄影师、设计师、保洁搬家团队、家具安装维修师傅及本地特色商家。登记免费，平台将人工核实服务信息，并根据实际需求尝试联系合适的服务者。登记不代表审核通过或保证获得订单。</p>
+   <div style="display:none;">
+    <div class="field">
   <label for="providerName">商家或个人名称</label>
   <input id="providerName" type="text"
          maxlength="80" placeholder="请输入名称">
@@ -419,7 +420,7 @@
   <input id="providerContact" type="text"
          maxlength="100" placeholder="微信号或手机号码">
 </div>
-    
+    </div>
 
    <button
     class="btn btn-primary"
@@ -518,8 +519,10 @@ requestSub:["点击下方“在线提交需求”，前往腾讯问卷填写。�
     consentText:["我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。","I agree to use these details to generate this request draft and understand it will not be sent automatically."],
     generateBtn:["生成需求单","Generate request draft"],copyRequest:["复制需求单","Copy request draft"],privacyNotice:["请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。","Do not enter ID numbers, bank details or unnecessary precise addresses. The draft is shown only in this browser."],
     joinTitle:["你是服务者或本地商家？","Are you a service provider or local business?"],
-    joinText:["欢迎准备入驻的摄影师、设计师、维修师傅、清洁搬家团队和本地商家。首批合作以信息核验和需求验证为主，暂不收取入驻费。","Photographers, designers, repair workers, cleaning and moving teams, and local shops are welcome to express interest. Initial onboarding is free while we verify information and demand."],
-    joinBtn:["生成入驻申请信息","Create provider application draft"],copyJoin:["复制申请信息","Copy application draft"],
+   
+joinText:["Niche Atlas 现面向吉州区、青原区及吉安县招募摄影师、设计师、保洁搬家团队、家具安装维修师傅及本地特色商家。登记免费，平台将人工核实服务信息，并根据实际需求尝试联系合适的服务者。登记不代表审核通过或保证获得订单。","Niche Atlas welcomes photographers, designers, cleaning and moving teams, furniture installers, repair professionals, and local specialty businesses in Jizhou District, Qingyuan District, and Ji'an County. Registration is free. We manually review provider information and may contact suitable providers based on actual requests. Registration does not guarantee approval or customer orders."],
+
+    joinBtn:["前往填写入驻申请","Open provider application"],
     footerText:["吉安本地服务需求与资源匹配","Local service requests and matching in Ji'an"],footerNote:["早期测试版 · 服务信息以核实结果为准","Early pilot · Listings require verification"]
   };
 
@@ -628,39 +631,6 @@ document.querySelectorAll("[data-request]").forEach(btn => {
   
 let latestJoin = "";
 
-$("joinBtn").addEventListener("click", () => {
-    const name = $("providerName").value.trim();
-    const category = $("providerCategory").value;
-    const area = $("providerArea").value.trim();
-    const price = $("providerPrice").value.trim();
-    const portfolio = $("providerPortfolio").value.trim();
-    const contact = $("providerContact").value.trim();
-
-    if (!name || !category || !area || !contact) {
-        $("joinResult").textContent =
-            "请填写名称、服务类别、服务区域和联系方式。";
-        $("joinResult").classList.add("show");
-        return;
-    }
-
-    latestJoin = [
-        "Niche Atlas 服务者入驻申请",
-        "商家或个人名称：" + name,
-        "服务类别：" + category,
-        "服务区域：" + area,
-        "报价方式/价格区间：" + (price || "待沟通"),
-        "服务介绍/作品链接：" + (portfolio || "暂未提供"),
-        "联系方式：" + contact
-    ].join("\n");
-
-    $("joinResult").textContent =
-        "申请信息已生成，请核对后复制并发送给平台运营者：\n\n"
-        + latestJoin
-        + "\n\n注意：申请尚未提交到后台，需要人工接收和审核。";
-
-    $("joinResult").classList.add("show");
-    $("copyJoin").classList.remove("hidden");
-});
 
 
   applyLanguage();
