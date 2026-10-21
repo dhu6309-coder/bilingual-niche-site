@@ -1,0 +1,14 @@
+
+[
+  {
+    "id": "provider-001",
+    "name": "示例摄影工作室",
+    "category": "creative",
+    "area": "吉州区",
+    "price": "价格面议",
+    "description": "提供商品摄影、宣传图片及短视频拍摄服务。",
+    "contact": "",
+    "status": "pending",
+    "public": false
+  }
+]
