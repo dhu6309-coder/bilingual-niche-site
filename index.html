@@ -310,9 +310,9 @@
     </div>
 
     <div class="panel" id="request">
-      <h2 id="requestTitle">提交服务需求</h2>
-      <p id="requestSub">填写必要信息，生成一份需求单。当前演示版本不会把信息自动发送或保存到服务器。</p>
-      <form id="requestForm">
+     <h2 id="requestTitle">在线登记服务需求</h2>
+    <p id="requestSub">请点击下方“在线提交需求”，前往腾讯问卷填写。提交成功后，平台才能收到你的需求信息。</p>
+     <form id="requestForm" style="display:none;">
         <div class="form-grid">
           <div class="field">
             <label for="needType" id="labelType">需求类别</label>
@@ -358,18 +358,19 @@
         <label class="consent"><input type="checkbox" id="consent" required><span id="consentText">我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。</span></label>
         <button class="btn btn-primary" type="submit" id="generateBtn">生成需求单</button>
         
-<button
+
+
+        <div class="result" id="requestResult" aria-live="polite"></div>
+        <button class="btn hidden" id="copyRequest" type="button" style="margin-top:10px">复制需求单</button>
+        <div class="notice" id="privacyNotice">请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。</div>
+      </form>
+      <button
   class="btn btn-primary"
   type="button"
   id="onlineSubmitBtn"
   style="margin-top:10px"
   onclick="window.open('https://wj.qq.com/s2/28278327/ao82/', '_blank', 'noopener,noreferrer')"
 >在线提交需求</button>
-
-        <div class="result" id="requestResult" aria-live="polite"></div>
-        <button class="btn hidden" id="copyRequest" type="button" style="margin-top:10px">复制需求单</button>
-        <div class="notice" id="privacyNotice">请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。</div>
-      </form>
     </div>
   </section>
 
@@ -510,8 +511,8 @@ step4Text:["双方自行确认价格、时间、服务内容及付款安排。",
 
 safetyNotice:["当前为早期测试版本，平台不保证匹配成功，也不通过网站收取服务款项。","This is an early pilot. Successful matching is not guaranteed, and the website does not collect service payments."],
 
-    requestTitle:["提交服务需求","Describe your request"],
-    requestSub:["填写必要信息，生成一份需求单。当前演示版本不会把信息自动发送或保存到服务器。","Fill in the essentials to generate a request summary. This demo does not send or store it on a server."],
+   requestTitle:["在线登记服务需求","Submit a service request"],
+requestSub:["点击下方“在线提交需求”，前往腾讯问卷填写。提交成功后，平台才能收到你的需求信息。","Click the button below to complete the Tencent Questionnaire. Your request will reach us only after you submit the questionnaire successfully."],
     labelType:["需求类别","Category"],labelArea:["所在区域","Area"],labelBudget:["预算范围（可选）","Budget (optional)"],labelTime:["期望时间（可选）","Preferred timing (optional)"],labelDesc:["需求描述","Description"],labelContact:["联系方法","Contact method"],labelNickname:["称呼（可选）","Name (optional)"],
     timePlaceholder:["例如：本周末","e.g. this weekend"],descPlaceholder:["请描述你需要什么服务、数量或现场情况。不要填写身份证号等敏感信息。","Describe the service, quantity or situation. Do not include sensitive ID information."],contactPlaceholder:["微信号或手机号（生成需求单时使用）","WeChat ID or phone number (used in the draft)"],nicknamePlaceholder:["怎么称呼你","How should we address you"],
     consentText:["我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。","I agree to use these details to generate this request draft and understand it will not be sent automatically."],
