@@ -690,6 +690,59 @@ document.querySelectorAll("[data-request]").forEach(btn => {
 let latestJoin = "";
 
 
+async function loadProviders() {
+  const list = document.getElementById("providerList");
+  if (!list) return;
+
+  try {
+    const response = await fetch("./providers.json");
+    if (!response.ok) {
+      throw new Error("Failed to load providers.json");
+    }
+
+    const providers = await response.json();
+
+    const approvedProviders = providers.filter(provider =>
+      provider.status === "approved" &&
+      provider.public === true
+    );
+
+    list.replaceChildren();
+
+    if (approvedProviders.length === 0) {
+      const message = document.createElement("p");
+      message.textContent = "暂无已审核并公开的服务者，欢迎服务者申请入驻。";
+      list.appendChild(message);
+      return;
+    }
+
+    approvedProviders.forEach(provider => {
+      const card = document.createElement("article");
+      card.className = "service-card";
+
+      const title = document.createElement("h3");
+      title.textContent = provider.name || "本地服务者";
+
+      const description = document.createElement("p");
+      description.textContent = provider.description || "暂无服务介绍";
+
+      const area = document.createElement("p");
+      area.textContent = "服务区域：" + (provider.area || "暂未填写");
+
+      const price = document.createElement("p");
+      price.textContent = "报价：" + (provider.price || "请咨询");
+
+      card.append(title, description, area, price);
+      list.appendChild(card);
+    });
+  } catch (error) {
+    list.textContent = "服务者资料暂时无法加载，请稍后再试。";
+    console.error("加载服务者资料失败：", error);
+  }
+}
+
+loadProviders();
+
 
   applyLanguage();
   filterServices("");
