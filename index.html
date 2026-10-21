@@ -86,6 +86,37 @@
     .hidden{display:none!important}
     @media(max-width:850px){.category-grid{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
     @media(max-width:560px){.nav{min-height:64px}.brand{font-size:19px}.nav .btn{padding:8px 10px}.hero{padding:48px 0 30px}.hero p{font-size:15px}.searchbar{flex-direction:column}.searchbar .btn{width:100%}.category-grid,.service-grid{grid-template-columns:1fr}.category{padding:17px}.section-head{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.panel{padding:19px}}
+ 
+/* 首页主要操作按钮 */
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.hero-actions .btn {
+  text-align: center;
+  text-decoration: none;
+}
+
+/* 手机端优化 */
+@media (max-width: 560px) {
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-actions .btn {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -109,7 +140,7 @@
       <button class="btn btn-primary" type="submit" id="searchBtn">搜索服务</button>
     </form>
     
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;">
+<div class="hero-actions">
   <a
     class="btn btn-primary"
     href="https://wj.qq.com/s2/28278327/ao82/"
