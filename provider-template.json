@@ -1,0 +1,15 @@
+
+{
+  "providers": [
+    {
+      "id": "demo-001",
+      "name": "示例服务者",
+      "category": "repair",
+      "area": "吉州区",
+      "price": "待确认",
+      "description": "仅用于测试网站展示",
+      "status": "pending",
+      "publicListingConsent": false
+    }
+  ]
+}
