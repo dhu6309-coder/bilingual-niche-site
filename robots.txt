@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://dhu6309-coder.github.io/bilingual-niche-site/sitemap.xml
