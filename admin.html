@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Niche Atlas | 管理后台</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4f6f8;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color: #172333;
+    }
+    header {
+      background: #142c36;
+      color: white;
+      padding: 22px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h2 { margin: 0; font-size: 21px; }
+    main { max-width: 1100px; margin: 45px auto; padding: 0 18px; }
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 5px 24px #182c3b12;
+    }
+    .login { max-width: 430px; margin: 80px auto; }
+    input, button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 13px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    input { border: 1px solid #d1d8df; }
+    button {
+      background: #087c59;
+      border: 0;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .logout { width: auto; margin: 0; background: #40535e; }
+    .hidden { display: none; }
+    .muted { color: #697987; }
+    .error { color: #b42318; }
+    .success { color: #087c59; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td {
+      padding: 13px;
+      border-bottom: 1px solid #e6eaee;
+      text-align: left;
+      min-width: 110px;
+      vertical-align: top;
+    }
+    th { background: #f5f7f9; }
+    .small-btn { width: auto; margin: 0; padding: 8px 12px; }
+    select { padding: 9px; border: 1px solid #cbd5df; border-radius: 6px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Niche Atlas · 管理后台</h2>
+  <button id="logoutBtn" class="logout hidden">退出登录</button>
+</header>
+
+<main>
+  <section id="loginSection" class="card login">
+    <h2>管理员登录</h2>
+    <p class="muted">使用 Supabase 管理员账号登录</p>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="管理员邮箱"
+             autocomplete="username" required>
+      <input id="password" type="password" placeholder="登录密码"
+             autocomplete="current-password" required>
+      <button id="loginBtn" type="submit">登录后台</button>
+    </form>
+    <p id="loginMessage" role="status"></p>
+  </section>
+
+  <section id="dashboardSection" class="card hidden">
+    <h2>客户需求管理</h2>
+    <p class="muted">仅管理员可查看和处理客户需求</p>
+    <button id="refreshBtn" class="small-btn">刷新需求</button>
+    <p id="dashboardMessage" role="status"></p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>编号</th>
+            <th>提交时间</th>
+            <th>服务类型</th>
+            <th>地区</th>
+            <th>需求描述</th>
+            <th>预算</th>
+            <th>联系方式</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody id="requestRows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+  import { createClient } from
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+  // 你的 Supabase 项目地址
+  const SUPABASE_URL =
+    "https://vlhxennegkmiprgnhbko.supabase.co";
+
+  // 替换成你保存在记事本里的 Publishable Key
+  const SUPABASE_KEY = "在这里填写你的sb_publishable密钥";
+
+  // 你之前创建的管理员账号 UID
+  const ADMIN_UID =
+    "b143aa5c-73e0-4ab0-9769-fd1db635af19";
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const loginSection = document.getElementById("loginSection");
+  const dashboardSection = document.getElementById("dashboardSection");
+  const loginMessage = document.getElementById("loginMessage");
+  const dashboardMessage = document.getElementById("dashboardMessage");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginBtn = document.getElementById("loginBtn");
+  const requestRows = document.getElementById("requestRows");
+
+  function showLogin() {
+    loginSection.classList.remove("hidden");
+    dashboardSection.classList.add("hidden");
+    logoutBtn.classList.add("hidden");
+    requestRows.replaceChildren();
+  }
+
+  function showDashboard() {
+    loginSection.classList.add("hidden");
+    dashboardSection.classList.remove("hidden");
+    logoutBtn.classList.remove("hidden");
+  }
+
+  async function checkSession() {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) {
+      showLogin();
+      return;
+    }
+    if (data.user.id !== ADMIN_UID) {
+      await supabase.auth.signOut();
+      showLogin();
+      loginMessage.textContent = "该账号没有管理员权限";
+      loginMessage.className = "error";
+      return;
+    }
+    showDashboard();
+    await loadRequests();
+  }
+
+  document.getElementById("loginForm").addEventListener(
+    "submit", async (event) => {
+      event.preventDefault();
+      loginMessage.textContent = "正在验证登录...";
+      loginBtn.disabled = true;
+
+      try {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+        document.getElementById("password").value = "";
+        loginMessage.textContent = "";
+        await checkSession();
+      } catch (error) {
+        loginMessage.textContent = "登录失败：" + error.message;
+        loginMessage.className = "error";
+      } finally {
+        loginBtn.disabled = false;
+      }
+    }
+  );
+
+  async function loadRequests() {
+    dashboardMessage.textContent = "正在加载客户需求...";
+    requestRows.replaceChildren();
+
+    const { data, error } = await supabase
+      .from("service_requests")
+      .select("id,created_at,service_type,district,description,budget,contact,status")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      dashboardMessage.textContent = "读取失败：" + error.message;
+      dashboardMessage.className = "error";
+      return;
+    }
+
+    dashboardMessage.textContent =
+      `当前共有 ${data.length} 条客户需求`;
+    dashboardMessage.className = "success";
+
+    for (const item of data) {
+      const tr = document.createElement("tr");
+
+      const values = [
+        item.id,
+        item.created_at
+          ? new Date(item.created_at).toLocaleString("zh-CN")
+          : "",
+        item.service_type,
+        item.district,
+        item.description,
+        item.budget,
+        item.contact
+      ];
+
+      for (const value of values) {
+        const td = document.createElement("td");
+        td.textContent = value ?? "";
+        tr.appendChild(td);
+      }
+
+      const statusTd = document.createElement("td");
+      const select = document.createElement("select");
+
+      const statuses = [
+        ["pending", "待处理"],
+        ["contacted", "已联系"],
+        ["completed", "已完成"],
+        ["cancelled", "已取消"]
+      ];
+
+      for (const [value, label] of statuses) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        select.appendChild(option);
+      }
+
+      select.value = item.status || "pending";
+      const previousStatus = select.value;
+
+      select.addEventListener("change", async () => {
+        select.disabled = true;
+        const { error } = await supabase
+          .from("service_requests")
+          .update({ status: select.value })
+          .eq("id", item.id);
+
+        if (error) {
+          select.value = previousStatus;
+          alert("更新失败：" + error.message);
+        } else {
+          await loadRequests();
+        }
+        select.disabled = false;
+      });
+
+      statusTd.appendChild(select);
+      tr.appendChild(statusTd);
+      requestRows.appendChild(tr);
+    }
+  }
+
+  document.getElementById("refreshBtn")
+    .addEventListener("click", loadRequests);
+
+  logoutBtn.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    showLogin();
+  });
+
+  checkSession();
+</script>
+</body>
+</html>
