@@ -341,7 +341,7 @@
     <div class="panel" id="request">
      <h2 id="requestTitle">在线登记服务需求</h2>
     <p id="requestSub">请点击下方“在线提交需求”，前往腾讯问卷填写。提交成功后，平台才能收到你的需求信息。</p>
-     <form id="requestForm" style="display:none;">
+   <form id="requestForm">
         <div class="form-grid">
           <div class="field">
             <label for="needType" id="labelType">需求类别</label>
@@ -364,7 +364,12 @@
           <div class="field">
             <label for="budget" id="labelBudget">预算范围（可选）</label>
             <select id="budget">
-              <option value="">暂不确定</option><option>100元以内</option><option>100–300元</option><option>300–800元</option><option>800元以上</option><option>需要报价</option>
+              <option value="">暂不确定</option>
+<option value="100">100元以内</option>
+<option value="200">100–300元</option>
+<option value="550">300–800元</option>
+<option value="800">800元以上</option>
+<option value="">需要报价</option>
             </select>
           </div>
           <div class="field">
@@ -385,21 +390,21 @@
           </div>
         </div>
         <label class="consent"><input type="checkbox" id="consent" required><span id="consentText">我确认填写的信息用于生成本次需求单，并理解当前版本不会自动发送给平台或服务者。</span></label>
-        <button class="btn btn-primary" type="submit" id="generateBtn">生成需求单</button>
+        <button class="btn btn-primary" type="submit" id="generateBtn">提交需求</button>
         
 
 
         <div class="result" id="requestResult" aria-live="polite"></div>
         <button class="btn hidden" id="copyRequest" type="button" style="margin-top:10px">复制需求单</button>
-        <div class="notice" id="privacyNotice">请勿提交身份证号、银行卡信息、精确住址等不必要的敏感信息。生成的需求单仅显示在当前浏览器页面。</div>
+       <div class="notice" id="privacyNotice">请勿提交身份证号、银行卡信息、详细住址等敏感信息。点击“提交需求”后，信息将发送至 Niche Atlas 平台，供管理员审核及联系匹配服务者使用。</div>
       </form>
       <button
   class="btn btn-primary"
   type="button"
   id="onlineSubmitBtn"
   style="margin-top:10px"
-  onclick="window.open('https://wj.qq.com/s2/28278327/ao82/', '_blank', 'noopener,noreferrer')"
->在线提交需求</button>
+
+>填写上方需求表单</button>
     </div>
   </section>
 
@@ -623,33 +628,82 @@ document.querySelectorAll("[data-request]").forEach(btn => {
 
 
   let latestRequest = "";
-  $("requestForm").addEventListener("submit", event => {
-    event.preventDefault();
-    if (!$("consent").checked) return;
-    const typeText = $("needType").selectedOptions[0].textContent;
-    const area = $("area").value;
-    const budget = $("budget").value || (english ? "Not specified" : "暂不确定");
-    const time = $("time").value.trim() || (english ? "Flexible" : "时间灵活/未说明");
-    const desc = $("description").value.trim();
-    const contact = $("contact").value.trim();
-    const nickname = $("nickname").value.trim() || (english ? "Not specified" : "未填写");
-    latestRequest = (english ? "Niche Atlas request draft\n" : "Niche Atlas 服务需求单\n") +
-      (english ? "Category: " : "需求类别：") + typeText + "\n" +
-      (english ? "Area: " : "所在区域：") + area + "\n" +
-      (english ? "Budget: " : "预算范围：") + budget + "\n" +
-      (english ? "Timing: " : "期望时间：") + time + "\n" +
-      (english ? "Description: " : "需求描述：") + desc + "\n" +
-      (english ? "Contact: " : "联系方式：") + contact + "\n" +
-      (english ? "Name: " : "称呼：") + nickname;
-  $("requestResult").textContent =
-    (english
-        ? "Your request draft has been generated, but it has not been sent to Niche Atlas. Please copy it and send it to the platform operator through a contact channel provided on the official website."
-        : "你的需求单已生成，但尚未发送给 Niche Atlas 平台。请点击下方“复制需求单”，再通过平台公布的联系方式发送给运营者。平台收到后将人工核对需求，并尝试协助寻找合适的服务者。")
-    + "\n\n"
-    + latestRequest;
+  $("requestForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!$("consent").checked) {
+    alert("请先同意信息提交说明");
+    return;
+  }
+
+  const service_type =
+    $("needType").selectedOptions[0].textContent.trim();
+
+  const district = $("area").value.trim();
+  const description = $("description").value.trim();
+  const contact = $("contact").value.trim();
+  const budgetText = $("budget").value.trim();
+
+  const budget = budgetText
+    ? Number(budgetText)
+    : null;
+
+  if (!service_type || !district || !description || !contact) {
+    alert("请填写完整的需求信息");
+    return;
+  }
+
+  if (budgetText && (!Number.isFinite(budget) || budget < 0)) {
+    alert("预算请输入有效的非负数字");
+    return;
+  }
+
+  const submitButton = $("requestForm")
+    .querySelector('button[type="submit"]');
+
+  if (submitButton) submitButton.disabled = true;
+
+  try {
+    const response = await fetch(
+    "https://vlhxennegkmiprgnhbko.supabase.co/functions/v1/submit-service-request",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          service_type,
+          district,
+          description,
+          budget,
+          contact
+        })
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok || result.success !== true) {
+      throw new Error(result.error || "提交失败");
+    }
+
+    $("requestResult").textContent =
+      "需求提交成功！我们已收到您的信息，等待管理员处理。";
+
     $("requestResult").classList.add("show");
-    $("copyRequest").classList.remove("hidden");
-  });
+    $("copyRequest").classList.add("hidden");
+
+    $("requestForm").reset();
+
+  } catch (error) {
+    $("requestResult").textContent =
+      "提交失败：" + error.message;
+
+    $("requestResult").classList.add("show");
+  } finally {
+    if (submitButton) submitButton.disabled = false;
+  }
+});
 
   $("copyRequest").addEventListener("click", async () => {
     if (!latestRequest) return;
