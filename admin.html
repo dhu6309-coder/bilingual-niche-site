@@ -109,6 +109,36 @@
       </table>
     </div>
   </section>
+
+<section id="providerSection" class="card hidden">
+  <h2>服务者入驻审核</h2>
+  <p class="muted">仅管理员可查看和审核服务者申请</p>
+
+  <button id="refreshProvidersBtn" class="small-btn">
+    刷新服务者
+  </button>
+
+  <p id="providerMessage" role="status"></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>编号</th>
+          <th>提交时间</th>
+          <th>服务者名称</th>
+          <th>服务类型</th>
+          <th>服务地区</th>
+          <th>服务介绍</th>
+          <th>联系方式</th>
+          <th>审核状态</th>
+        </tr>
+      </thead>
+      <tbody id="providerRows"></tbody>
+    </table>
+  </div>
+</section>
+
 </main>
 
 <script type="module">
@@ -135,18 +165,26 @@
   const logoutBtn = document.getElementById("logoutBtn");
   const loginBtn = document.getElementById("loginBtn");
   const requestRows = document.getElementById("requestRows");
+  const providerSection = document.getElementById("providerSection");
+const providerRows = document.getElementById("providerRows");
+const providerMessage = document.getElementById("providerMessage");
+const refreshProvidersBtn = document.getElementById("refreshProvidersBtn");
 
   function showLogin() {
     loginSection.classList.remove("hidden");
     dashboardSection.classList.add("hidden");
     logoutBtn.classList.add("hidden");
     requestRows.replaceChildren();
+    providerSection.classList.add("hidden");
+providerRows.replaceChildren();
   }
 
   function showDashboard() {
     loginSection.classList.add("hidden");
     dashboardSection.classList.remove("hidden");
+    providerSection.classList.remove("hidden");
     logoutBtn.classList.remove("hidden");
+    loadProviders();
   }
 
   async function checkSession() {
@@ -283,6 +321,90 @@
     await supabase.auth.signOut();
     showLogin();
   });
+
+async function loadProviders() {
+  providerMessage.textContent = "正在加载服务者申请...";
+  providerRows.replaceChildren();
+
+  const { data, error } = await supabase
+    .from("service_providers")
+    .select("id, created_at, provider_name, service_type, district, description, contact, status")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    providerMessage.textContent = "加载失败：" + error.message;
+    return;
+  }
+
+  const providers = data || [];
+  providerMessage.textContent =
+    "当前共有 " + providers.length + " 条服务者申请";
+
+  const statuses = [
+    ["pending", "待审核"],
+    ["approved", "已通过"],
+    ["rejected", "已拒绝"]
+  ];
+
+  for (const item of providers) {
+    const tr = document.createElement("tr");
+
+    const values = [
+      item.id,
+      item.created_at
+        ? new Date(item.created_at).toLocaleString("zh-CN")
+        : "",
+      item.provider_name,
+      item.service_type,
+      item.district,
+      item.description || "",
+      item.contact
+    ];
+
+    for (const value of values) {
+      const td = document.createElement("td");
+      td.textContent = String(value ?? "");
+      tr.appendChild(td);
+    }
+
+    const statusTd = document.createElement("td");
+    const select = document.createElement("select");
+
+    for (const [value, label] of statuses) {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    }
+
+    select.value = item.status || "pending";
+
+    select.addEventListener("change", async () => {
+      const previousStatus = item.status || "pending";
+      select.disabled = true;
+
+      const { error } = await supabase
+        .from("service_providers")
+        .update({ status: select.value })
+        .eq("id", item.id);
+
+      if (error) {
+        select.value = previousStatus;
+        alert("审核状态更新失败：" + error.message);
+      } else {
+        item.status = select.value;
+      }
+
+      select.disabled = false;
+    });
+
+    statusTd.appendChild(select);
+    tr.appendChild(statusTd);
+    providerRows.appendChild(tr);
+  }
+}
+
+refreshProvidersBtn.addEventListener("click", loadProviders);
 
   checkSession();
 </script>
